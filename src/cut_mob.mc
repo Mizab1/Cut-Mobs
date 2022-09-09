@@ -1,6 +1,8 @@
+import ./macros/var.mcm
+
 function load{
-    scoreboard objectives add right_clicked minecraft.used:minecraft.carrot_on_a_stick
-    scoreboard objectives add raycast_distance dummy
+    var create right_clicked minecraft.used:minecraft.carrot_on_a_stick
+    var create raycast_distance dummy
 }
 function put_cut_tag{
     tag @s add cut
@@ -12,7 +14,7 @@ function tick{
         scoreboard players set @s raycast_distance 12
 
         # Scissors (Cut part)
-        execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable if score @s raycast_distance matches 1.. run{
+        execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run{
             particle crit
             scoreboard players remove @s raycast_distance 1
 
@@ -32,6 +34,8 @@ function tick{
 
                     title @a title {"text":"You cut the ocelot's tail", "color":"dark_purple"}
                     title @a subtitle {"text":"You can now run faster", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Ocelot\'s Tail","color":"gold","italic":false}'},CustomModelData:100001}}}
                 }
 
                 # llama
@@ -40,6 +44,7 @@ function tick{
 
                     title @a title {"text":"You cut the Llama's neck", "color":"dark_purple"}
                     title @a subtitle {"text":"You can now spit", "color":"gold"}
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Llama\'s Head","color":"gold","italic":false}'},CustomModelData:100002}}}
                 }
 
                 # snowman
@@ -107,7 +112,7 @@ function tick{
                     title @a subtitle {"text":"Now you can climb the wall when sneaking", "color":"gold"}
                 }
             }
-            execute if block ~ ~ ~ #cut_mob:passable unless entity @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] positioned ^ ^ ^0.5 run function $block
+            execute if block ~ ~ ~ #cut_mob:passable unless entity @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] positioned ^ ^ ^0.5 if score @s raycast_distance matches 1.. run function $block
         }
     }
 }
