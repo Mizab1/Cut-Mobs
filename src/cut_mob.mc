@@ -4,10 +4,15 @@ function load{
     var create right_clicked minecraft.used:minecraft.carrot_on_a_stick
     var create raycast_distance dummy
 }
+
 function put_cut_tag{
     tag @s add cut
     data merge entity @s {CustomName:'{"text":"cut"}'}
 }
+function give_scissors{
+    give @s carrot_on_a_stick{display:{Name:'{"text":"Scissors","color":"gold","italic":false}'},CustomModelData:000001} 1
+}
+
 function tick{
     execute as @a[scores={right_clicked=1..}, predicate=cut_mob:scissor] at @s run{
         scoreboard players set @s right_clicked 0
@@ -54,6 +59,8 @@ function tick{
 
                     title @a title {"text":"You cut the snowman's head", "color":"dark_purple"}
                     title @a subtitle {"text":"You bow have infinite snowball", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carved_pumpkin",Count:1b,tag:{display:{Name:'{"text":"Snowman\'s Head","color":"gold","italic":false}'},CustomModelData:100003}}}
                 }
 
                 # enderman
@@ -62,6 +69,8 @@ function tick{
 
                     title @a title {"text":"You cut the enderman's head", "color":"dark_purple"}
                     title @a subtitle {"text":"You now have infinite ender pearl", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Enderman\'s Head","color":"gold","italic":false}'},CustomModelData:100004}}}
                 }
 
                 # creeper
@@ -70,6 +79,8 @@ function tick{
 
                     title @a title {"text":"You cut the creeper's head", "color":"dark_purple"}
                     title @a subtitle {"text":"You now explode whenever you sneak", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Creeper\'s Head","color":"gold","italic":false}'},CustomModelData:100005}}}
                 }
 
                 # goat
@@ -78,6 +89,8 @@ function tick{
 
                     title @a title {"text":"You cut the goat's horn", "color":"dark_purple"}
                     title @a subtitle {"text":"You now have jump boost", "color":"gold"}
+                    
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Goat\'s Horns","color":"gold","italic":false}'},CustomModelData:100006}}}
                 }
 
                 # cow
@@ -86,6 +99,8 @@ function tick{
 
                     title @a title {"text":"You cut the cow's udder", "color":"dark_purple"}
                     title @a subtitle {"text":"You now shoot poison milk", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Cow\'s Udder","color":"gold","italic":false}'},CustomModelData:100007}}}
                 }
 
                 # dolphin
@@ -94,6 +109,8 @@ function tick{
 
                     title @a title {"text":"You cut the dolphin's fin", "color":"dark_purple"}
                     title @a subtitle {"text":"Now you can swim faster and breath underwater", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Dolphin\'s Fins","color":"gold","italic":false}'},CustomModelData:100008}}}
                 }
 
                 # bat
@@ -102,6 +119,8 @@ function tick{
 
                     title @a title {"text":"You cut the bats's wing", "color":"dark_purple"}
                     title @a subtitle {"text":"Now you can fly and levitate when sneaking", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:elytra",Count:1b,tag:{display:{Name:'{"text":"Bat\'s Wing","color":"gold","italic":false}'},CustomModelData:100009}}}
                 }
 
                 # spider
@@ -110,6 +129,8 @@ function tick{
 
                     title @a title {"text":"You cut the spider's legs", "color":"dark_purple"}
                     title @a subtitle {"text":"Now you can climb the wall when sneaking", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Spider\'s legs","color":"gold","italic":false}'},CustomModelData:100010}}}
                 }
             }
             execute if block ~ ~ ~ #cut_mob:passable unless entity @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] positioned ^ ^ ^0.5 if score @s raycast_distance matches 1.. run function $block
@@ -130,24 +151,33 @@ predicate scissor{
         }
     }
 }
+predicate is_sneaking{
+    "condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "flags": {
+            "is_sneaking": true
+        }
+    }
+}
 
 blocks passable{
     minecraft:air
     minecraft:cave_air
     minecraft:void_air
+    minecraft:water
 }
 
 entities is_cuttable{
     minecraft:sheep
-    minecraft:bee
-    minecraft:wolf
     minecraft:bat
     minecraft:goat
     minecraft:llama
     minecraft:snow_golem
-    minecraft:panda
     minecraft:ocelot
-    minecraft:piglin
-    minecraft:hoglin
-    minecraft:magma_cube
+    minecraft:enderman
+    minecraft:creeper
+    minecraft:dolphin
+    minecraft:cow
+    minecraft:spider
 }
