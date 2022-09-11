@@ -29,6 +29,7 @@ clock 5t{
         # cow udder
         execute unless entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100007}}]}] run{
             clear @s minecraft:carrot_on_a_stick{CustomModelData:200002}
+            clear @s minecraft:chainmail_chestplate{CustomModelData:100007}
         }
     }
 }
@@ -44,7 +45,7 @@ function tick{
         scoreboard players set @s spit_distance 8
 
         execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run{
-            particle poof ~ ~-0.3 ~
+            particle poof ~ ~0.6 ~
             scoreboard players remove @s spit_distance 1
 
             execute as @e[type=#part_effects:undead, distance=..1.5] run{
@@ -161,6 +162,15 @@ function tick{
                 execute as @a if entity @s[tag=spawned_spider] run tag @s remove spawned_spider
             }
         }
+
+        <%%
+            let coord = ["~0.5 ~ ~", "~ ~ ~0.5", "~-0.5 ~ ~", "~ ~ ~-0.5", "~0.5 ~ ~0.5", "~-0.5 ~ ~-0.5", "~0.5 ~ ~-0.5", "~-0.5 ~ ~0.5"];
+
+            for (let i = 0; i < coord.length; i++) {
+                emit(`execute at @s unless block ${coord[i]} air run effect give @s levitation 1 5 true`);
+                emit(`execute at @s if block ${coord[i]} air run effect clear @s levitation`);
+            }
+        %%>
     }
 }
 

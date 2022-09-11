@@ -1,6 +1,6 @@
 #built using mc-build (https://github.com/mc-build/mc-build)
 
-particle poof ~ ~-0.3 ~
+particle poof ~ ~0.6 ~
 scoreboard players remove @s spit_distance 1
 execute as @e[type=#part_effects:undead, distance=..1.5] run effect give @s instant_health 1 0 true
 execute as @e[type=!#part_effects:undead, distance=..1.5] run effect give @s instant_damage 1 0 true

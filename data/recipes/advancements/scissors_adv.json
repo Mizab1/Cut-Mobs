@@ -1,0 +1,1 @@
+{"criteria":{"Unlocked":{"trigger": "minecraft:recipe_unlocked","conditions":{"recipe": "recipes:scissors"}}},"rewards":{"function": "recipes:crafted_scissors"}}

@@ -10,7 +10,7 @@ function put_cut_tag{
     data merge entity @s {CustomName:'{"text":"cut"}'}
 }
 function give_scissors{
-    give @s carrot_on_a_stick{display:{Name:'{"text":"Scissors","color":"gold","italic":false}'},CustomModelData:000001} 1
+    give @s carrot_on_a_stick{display:{Name:'{"text":"Scissors","color":"gold","italic":false}'},CustomModelData:110001} 1
 }
 
 function tick{
@@ -20,7 +20,10 @@ function tick{
 
         # Scissors (Cut part)
         execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run{
-            particle crit
+            !IF(config.dev) {
+                particle crit
+            }
+            
             scoreboard players remove @s raycast_distance 1
 
             execute as @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] at @s run{
@@ -146,7 +149,7 @@ predicate scissor{
         "equipment": {
             "mainhand": {
                 "item": "minecraft:carrot_on_a_stick",
-                "nbt": "{CustomModelData:000001}"
+                "nbt": "{CustomModelData:110001}"
             }
         }
     }
