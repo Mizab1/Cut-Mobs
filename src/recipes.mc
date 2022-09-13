@@ -2,18 +2,15 @@ recipe scissors{
     "type": "minecraft:crafting_shaped",
     "pattern": [
         "# #",
-        " Q ",
-        "R R"
+        " # ",
+        "O O"
     ],
     "key": {
         "#": {
             "item": "minecraft:iron_ingot"
         },
-        "Q": {
-          "item": "minecraft:quartz_block"
-        },
-        "R": {
-            "item": "minecraft:red_terracotta"
+        "O": {
+          "item": "minecraft:oak_planks"
         }
     },
     "result": {

@@ -1,1 +1,1 @@
-{"type": "minecraft:crafting_shaped","pattern": ["# #"," Q ","R R"],"key":{"#":{"item": "minecraft:iron_ingot"},"Q":{"item": "minecraft:quartz_block"},"R":{"item": "minecraft:red_terracotta"}},"result":{"item": "minecraft:knowledge_book","count": 1}}
+{"type": "minecraft:crafting_shaped","pattern": ["# #"," # ","O O"],"key":{"#":{"item": "minecraft:iron_ingot"},"O":{"item": "minecraft:oak_planks"}},"result":{"item": "minecraft:knowledge_book","count": 1}}

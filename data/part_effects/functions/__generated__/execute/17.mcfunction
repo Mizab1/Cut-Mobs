@@ -1,7 +1,6 @@
 #built using mc-build (https://github.com/mc-build/mc-build)
 
-particle minecraft:dust 1 1 1 1 ~ ~-0.5 ~ 0.1 0.1 0.1 0 10
-scoreboard players remove @s spit_distance 1
-execute as @e[type=#part_effects:undead, distance=..1.5] run effect give @s instant_health 1 0 true
-execute as @e[type=!#part_effects:undead, distance=..1.5] run effect give @s instant_damage 1 0 true
-execute if block ~ ~ ~ #cut_mob:passable unless entity @e[distance=..1.5] positioned ^ ^ ^1 if score @s spit_distance matches 1.. run function part_effects:__generated__/execute/17
+playsound minecraft:splash master @s ~ ~ ~ 0.5
+scoreboard players set @s right_clicked 0
+scoreboard players set @s spit_distance 6
+execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run function part_effects:__generated__/execute/18

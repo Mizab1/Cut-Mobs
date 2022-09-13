@@ -109,6 +109,73 @@ function tick{
             clear @s minecraft:carrot_on_a_stick{CustomModelData:100010} 1
         }
     }
+
+    # horse part
+    execute as @a[scores={right_clicked=1..}, predicate=part_replace:horse_tail] at @s run{
+        scoreboard players remove @s right_clicked 1
+
+        execute(if entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            tellraw @s {"text":"Please first remove the existing part", "color":"gold"}
+        }
+        execute(unless entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            item replace entity @s armor.head with carrot_on_a_stick{display:{Name:'{"text":"Horse\'s tail","color":"gold","italic":false}'},CustomModelData:100011} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:100011} 1
+        }
+    }
+
+    # ghast part
+    execute as @a[scores={right_clicked=1..}, predicate=part_replace:ghast_mouth] at @s run{
+        scoreboard players remove @s right_clicked 1
+
+        execute(if entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            tellraw @s {"text":"Please first remove the existing part", "color":"gold"}
+        }
+        execute(unless entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            item replace entity @s armor.head with carrot_on_a_stick{display:{Name:'{"text":"Ghast\'s head","color":"gold","italic":false}'},CustomModelData:100012} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:100012} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:200003}
+            give @s carrot_on_a_stick{display:{Name:'{"text":"Shoot fireball","italic":false}'}, CustomModelData:200003}
+        }
+    }
+
+    # glow_squid part
+    execute as @a[scores={right_clicked=1..}, predicate=part_replace:glow_squid_tentacles] at @s run{
+        scoreboard players remove @s right_clicked 1
+
+        execute(if entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            tellraw @s {"text":"Please first remove the existing part", "color":"gold"}
+        }
+        execute(unless entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            item replace entity @s armor.head with carrot_on_a_stick{display:{Name:'{"text":"Glowing Squid\'s tentacles","color":"gold","italic":false}'},CustomModelData:100013} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:100013} 1
+        }
+    }
+
+    # turtle part
+    execute as @a[scores={right_clicked=1..}, predicate=part_replace:turtle_shell] at @s run{
+        scoreboard players remove @s right_clicked 1
+
+        execute(if entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            tellraw @s {"text":"Please first remove the existing part", "color":"gold"}
+        }
+        execute(unless entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            item replace entity @s armor.head with carrot_on_a_stick{display:{Name:'{"text":"Turtle\'s shell","color":"gold","italic":false}'},CustomModelData:100014} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:100014} 1
+        }
+    }
+
+    # wodl part
+    execute as @a[scores={right_clicked=1..}, predicate=part_replace:wolf_nose] at @s run{
+        scoreboard players remove @s right_clicked 1
+
+        execute(if entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            tellraw @s {"text":"Please first remove the existing part", "color":"gold"}
+        }
+        execute(unless entity @s[nbt={Inventory:[{Slot:103b}]}]){
+            item replace entity @s armor.head with carrot_on_a_stick{display:{Name:'{"text":"Wolf\'s nose","color":"gold","italic":false}'},CustomModelData:100015} 1
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:100015} 1
+        }
+    }
 }
 
 
@@ -205,6 +272,66 @@ predicate spider_leg{
             "mainhand": {
                 "item": "minecraft:carrot_on_a_stick",
                 "nbt": "{CustomModelData:100010}"
+            }
+        }
+    }
+}
+predicate horse_tail{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:100011}"
+            }
+        }
+    }
+}
+predicate ghast_mouth{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:100012}"
+            }
+        }
+    }
+}
+predicate glow_squid_tentacles{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:100013}"
+            }
+        }
+    }
+}
+predicate turtle_shell{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:100014}"
+            }
+        }
+    }
+}
+predicate wolf_nose{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:100015}"
             }
         }
     }

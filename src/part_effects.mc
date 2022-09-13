@@ -31,6 +31,11 @@ clock 5t{
             clear @s minecraft:carrot_on_a_stick{CustomModelData:200002}
             clear @s minecraft:chainmail_chestplate{CustomModelData:100007}
         }
+
+        # ghast mouth
+        execute unless entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100012}}]}] run{
+            clear @s minecraft:carrot_on_a_stick{CustomModelData:200003}
+        }
     }
 }
 function tick{
@@ -114,6 +119,7 @@ function tick{
 
     # cow udder
     execute as @a[scores={right_clicked=1..}, predicate=part_effects:poison_milk] at @s if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100007}}]}] run{
+        playsound minecraft:splash master @s ~ ~ ~ 0.5
         scoreboard players set @s right_clicked 0
         scoreboard players set @s spit_distance 6
 
@@ -167,10 +173,86 @@ function tick{
             let coord = ["~0.5 ~ ~", "~ ~ ~0.5", "~-0.5 ~ ~", "~ ~ ~-0.5", "~0.5 ~ ~0.5", "~-0.5 ~ ~-0.5", "~0.5 ~ ~-0.5", "~-0.5 ~ ~0.5"];
 
             for (let i = 0; i < coord.length; i++) {
-                emit(`execute at @s unless block ${coord[i]} air run effect give @s levitation 1 5 true`);
-                emit(`execute at @s if block ${coord[i]} air run effect clear @s levitation`);
+                emit(`execute at @s positioned ~ ~1 ~ if block ${coord[i]} #blocks:solid run effect give @s levitation 1 5 true`);
+                // emit(`execute at @s positioned ~ ~1 ~ if block ${coord[i]} air run effect clear @s levitation`);
             }
         %%>
+    }
+
+    # horse tail
+    execute as @a if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100011}}]}] run{
+        effect give @s jump_boost 2 2 true
+        effect give @s speed 2 6 true
+        effect give @s resistance 2 2 true
+    }
+
+    # ghast mouth
+    execute as @a[scores={right_clicked=1..}, predicate=part_effects:ghast_mouth] at @s if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100012}}]}] run{
+        scoreboard players set @s right_clicked 0
+        summon fireball ~ ~1.5 ~ {Tags:["player_spawned"]}
+    }
+    execute as @e[type=fireball, tag=!tagged, tag=player_spawned] at @s rotated as @p run{
+
+        execute store result score @s pos_x1 run data get entity @s Pos[0] 100
+        execute store result score @s pos_y1 run data get entity @s Pos[1] 100
+        execute store result score @s pos_z1 run data get entity @s Pos[2] 100
+
+        tp @s ^ ^ ^0.5
+
+        execute store result score @s pos_x2 run data get entity @s Pos[0] 100
+        execute store result score @s pos_y2 run data get entity @s Pos[1] 100
+        execute store result score @s pos_z2 run data get entity @s Pos[2] 100
+
+        scoreboard players operation @s pos_x2 -= @s pos_x1
+        scoreboard players operation @s pos_y2 -= @s pos_y1
+        scoreboard players operation @s pos_z2 -= @s pos_z1 
+
+        execute store result entity @s power[0] double 0.01 run scoreboard players get @s pos_x2
+        execute store result entity @s power[1] double 0.01 run scoreboard players get @s pos_y2
+        execute store result entity @s power[2] double 0.01 run scoreboard players get @s pos_z2 
+
+        # tellraw @r {"text":"-----------------------"}
+        # tellraw @p {"score":{"name":"@s ","objective":"pos_x2"}}
+        # tellraw @p {"score":{"name":"@s ","objective":"pos_y2"}}
+        # tellraw @p {"score":{"name":"@s ","objective":"pos_z2"}}
+        # tellraw @p {"text":"-----------------------"}
+
+        tag @s add tagged
+    }
+
+    # glow squid tentacles
+    execute as @a if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100013}}]}] run{
+        execute at @s if entity @s[predicate=cut_mob:is_sneaking, tag=!xray_vision] run{
+            tag @s add xray_vision
+            execute positioned ~-3 ~ ~-3 run{
+                LOOP(10,i){
+                    LOOP(10,j){
+                        LOOP(10,k){
+                            execute positioned ~<%i%> ~-<%k%> ~<%j%> if block ~ ~ ~ #part_effects:ores align xz run{
+                                summon shulker ~ ~ ~ {Tags:["highlight"], NoGravity:1b,Glowing:1b,NoAI:1b,AttachFace:0b,ActiveEffects:[{Id:14,Amplifier:1b,Duration:999999,ShowParticles:0b}]}
+                            }
+                        }
+                    }
+                }
+            }
+            schedule 1s replace{
+                execute as @a if entity @s[tag=xray_vision] run tag @s remove xray_vision
+                tp @e[type=shulker, tag=highlight] ~ ~-600 ~
+            }
+        }
+    }
+
+    # turtle shell
+    execute as @a if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100014}}]}] run{
+        effect give @s resistance 2 6 true
+        effect give @s water_breathing 2 1 true
+    }
+
+    # wolf nose
+    execute as @a if entity @s[nbt={Inventory:[{id:"minecraft:carrot_on_a_stick",Slot:103b,tag:{CustomModelData:100015}}]}] run{
+        execute at @s if entity @s[predicate=cut_mob:is_sneaking] run{
+            execute as @e[type=#part_effects:hostile, distance=..30] run effect give @s glowing 3 1 true
+        }
     }
 }
 
@@ -188,6 +270,42 @@ entities undead{
     minecraft:stray
     minecraft:wither
     minecraft:phantom
+}
+entities hostile{
+    minecraft:blaze
+    minecraft:creeper
+    minecraft:drowned
+    minecraft:elder_guardian
+    minecraft:ender_dragon
+    minecraft:evoker
+    minecraft:ghast
+    minecraft:guardian
+    minecraft:hoglin
+    minecraft:husk
+    minecraft:magma_cube
+    minecraft:phantom
+    minecraft:piglin
+    minecraft:piglin_brute
+    minecraft:pillager
+    minecraft:ravager
+    minecraft:shulker
+    minecraft:silverfish
+    minecraft:skeleton
+    minecraft:slime
+    minecraft:stray
+    minecraft:vex
+    minecraft:vindicator
+    minecraft:witch
+    minecraft:wither
+    minecraft:wither_skeleton
+    minecraft:zoglin
+    minecraft:zombie
+    minecraft:zombie_villager
+}
+
+blocks ores{
+    minecraft:diamond_ore
+    minecraft:iron_ore
 }
 #> COAS
 predicate llama_spit{
@@ -210,6 +328,18 @@ predicate poison_milk{
             "mainhand": {
                 "item": "minecraft:carrot_on_a_stick",
                 "nbt": "{CustomModelData:200002}"
+            }
+        }
+    }
+}
+predicate ghast_mouth{
+	"condition": "minecraft:entity_properties",
+    "entity": "this",
+    "predicate": {
+        "equipment": {
+            "mainhand": {
+                "item": "minecraft:carrot_on_a_stick",
+                "nbt": "{CustomModelData:200003}"
             }
         }
     }

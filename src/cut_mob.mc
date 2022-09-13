@@ -14,9 +14,13 @@ function give_scissors{
 }
 
 function tick{
+    execute as @a[predicate=cut_mob:scissor] at @s run{
+        particle totem_of_undying ~ ~ ~ 0.5 0.2 0.5 0.1 20 normal
+        particle poof ~ ~ ~ 0.2 0.2 0.2 0.2 1 normal
+    }
     execute as @a[scores={right_clicked=1..}, predicate=cut_mob:scissor] at @s run{
         scoreboard players set @s right_clicked 0
-        scoreboard players set @s raycast_distance 12
+        scoreboard players set @s raycast_distance 40
 
         # Scissors (Cut part)
         execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run{
@@ -27,14 +31,14 @@ function tick{
             scoreboard players remove @s raycast_distance 1
 
             execute as @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] at @s run{
-                # for sheep
-                execute if entity @s[type=sheep] run{
-                    tag @s add cut
-                    data merge entity @s {Sheared:1b}
+                # sheep
+                # execute if entity @s[type=sheep] run{
+                #     tag @s add cut
+                #     data merge entity @s {Sheared:1b}
 
-                    title @a title {"text":"You cut the sheep's wool", "color":"dark_purple"}
-                    title @a subtitle {"text":"You can smash everyone to air", "color":"gold"}
-                }
+                #     title @a title {"text":"You cut the sheep's wool", "color":"dark_purple"}
+                #     title @a subtitle {"text":"You can smash everyone to air", "color":"gold"}
+                # }
 
                 # ocelot
                 execute if entity @s[type=ocelot] run{
@@ -135,6 +139,56 @@ function tick{
 
                     summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Spider\'s legs","color":"gold","italic":false}'},CustomModelData:100010}}}
                 }
+
+                # horse
+                execute if entity @s[type=horse] run{
+                    function cut_mob:put_cut_tag
+
+                    title @a title {"text":"You cut the Horse's tail", "color":"dark_purple"}
+                    title @a subtitle {"text":"Now you can run fast and jump higher and have more resistance", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Horse\'s tail","color":"gold","italic":false}'},CustomModelData:100011}}}
+                }
+
+                # ghast
+                execute if entity @s[type=ghast] run{
+                    function cut_mob:put_cut_tag
+
+                    title @a title {"text":"You cut the Ghast's head", "color":"dark_purple"}
+                    title @a subtitle {"text":"Now you can shoot fireballs", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Ghast\'s head","color":"gold","italic":false}'},CustomModelData:100012}}}
+                }
+
+                # glow_squid
+                execute if entity @s[type=glow_squid] run{
+                    function cut_mob:put_cut_tag
+
+                    title @a title {"text":"You cut the Glowing Squid's tentacles", "color":"dark_purple"}
+                    title @a subtitle {"text":"Now you can detect ores when sneaking", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Glowing Squid\'s tentacles","color":"gold","italic":false}'},CustomModelData:100013}}}
+                }
+
+                # turtle
+                execute if entity @s[type=turtle] run{
+                    function cut_mob:put_cut_tag
+
+                    title @a title {"text":"You cut the Turtle's shell", "color":"dark_purple"}
+                    title @a subtitle {"text":"Now you can got heavy resistance", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Turtle\'s shell","color":"gold","italic":false}'},CustomModelData:100014}}}
+                }
+
+                # wolf
+                execute if entity @s[type=wolf] run{
+                    function cut_mob:put_cut_tag
+
+                    title @a title {"text":"You cut the Wolf's nose", "color":"dark_purple"}
+                    title @a subtitle {"text":"Now you can detect mobs in 30 block readius when sneaking", "color":"gold"}
+
+                    summon item ~ ~ ~ {Item:{id:"minecraft:carrot_on_a_stick",Count:1b,tag:{display:{Name:'{"text":"Wolf\'s nose","color":"gold","italic":false}'},CustomModelData:100015}}}
+                }
             }
             execute if block ~ ~ ~ #cut_mob:passable unless entity @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] positioned ^ ^ ^0.5 if score @s raycast_distance matches 1.. run function $block
         }
@@ -183,4 +237,9 @@ entities is_cuttable{
     minecraft:dolphin
     minecraft:cow
     minecraft:spider
+    minecraft:horse
+    minecraft:ghast
+    minecraft:glow_squid
+    minecraft:turtle
+    minecraft:wolf
 }

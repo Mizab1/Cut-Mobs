@@ -1,6 +1,5 @@
 #built using mc-build (https://github.com/mc-build/mc-build)
 
-particle crit
-scoreboard players remove @s raycast_distance 1
-execute as @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] at @s run function cut_mob:__generated__/execute/2
-execute if block ~ ~ ~ #cut_mob:passable unless entity @e[type=#cut_mob:is_cuttable, tag=!cut, distance=..1.5] positioned ^ ^ ^0.5 if score @s raycast_distance matches 1.. run function cut_mob:__generated__/execute/1
+scoreboard players set @s right_clicked 0
+scoreboard players set @s raycast_distance 40
+execute anchored eyes positioned ^ ^ ^1 if block ~ ~ ~ #cut_mob:passable run function cut_mob:__generated__/execute/2
